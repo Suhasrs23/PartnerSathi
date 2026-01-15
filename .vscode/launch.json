@@ -1,0 +1,14 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Debug Firebase Functions",
+      "type": "node",
+      "request": "launch",
+      "program": "${workspaceFolder}/Backend/functions/lib/index.js",
+      "env": {
+        "FUNCTIONS_EMULATOR": "true"
+      }
+    }
+  ]
+}

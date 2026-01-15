@@ -1,0 +1,66 @@
+mutation SeedData @transaction @auth(level: PUBLIC, insecureReason: "This operation is for seeding data and does not require authentication") {
+  user_insertMany(data: [
+    {
+      id: "550e8400-e29b-41d4-a716-446655440000",
+      displayName: "Demo User 1",
+      phoneNumber: "123-456-7890",
+      isVerified: true,
+      status: "active"
+    },
+    {
+      id: "550e8400-e29b-41d4-a716-446655440001",
+      displayName: "Demo User 2",
+      phoneNumber: "987-654-3210",
+      isVerified: false,
+      status: "inactive"
+    }
+  ])
+  emergencyAlert_insertMany(data: [
+    {
+      id: "650e8400-e29b-41d4-a716-446655440002",
+      triggeringUserId: "550e8400-e29b-41d4-a716-446655440000",
+      alertType: "Medical",
+      status: "Open",
+      timestamp: "2024-04-26T12:00:00Z",
+      location: [37.7749, -122.4194]
+    },
+    {
+      id: "750e8400-e29b-41d4-a716-446655440003",
+      triggeringUserId: "550e8400-e29b-41d4-a716-446655440001",
+      alertType: "Fire",
+      status: "Closed",
+      timestamp: "2024-04-26T13:00:00Z",
+            location: [34.0522, -118.2437]
+    }
+  ])
+  alertResponse_insertMany(data: [
+    {
+      id: "850e8400-e29b-41d4-a716-446655440004",
+      emergencyAlertId: "650e8400-e29b-41d4-a716-446655440002",
+      respondingUserId: "550e8400-e29b-41d4-a716-446655440001",
+      status: "Accepted",
+      responseTimestamp: "2024-04-26T12:15:00Z"
+    },
+    {
+      id: "950e8400-e29b-41d4-a716-446655440005",
+      emergencyAlertId: "750e8400-e29b-41d4-a716-446655440003",
+      respondingUserId: "550e8400-e29b-41d4-a716-446655440000",
+      status: "Rejected",
+      responseTimestamp: "2024-04-26T13:30:00Z"
+    }
+  ])
+  verificationRequest_insertMany(data: [
+    {
+      id: "a50e8400-e29b-41d4-a716-446655440006",
+      userId: "550e8400-e29b-41d4-a716-446655440000",
+      requestTimestamp: "2024-04-25T10:00:00Z",
+      status: "Pending"
+    },
+    {
+      id: "b50e8400-e29b-41d4-a716-446655440007",
+      userId: "550e8400-e29b-41d4-a716-446655440001",
+      requestTimestamp: "2024-04-26T09:00:00Z",
+      status: "Approved"
+    }
+  ])
+}

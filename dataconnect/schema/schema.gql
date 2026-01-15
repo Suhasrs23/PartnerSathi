@@ -1,0 +1,36 @@
+type User @table {
+  displayName: String!
+  phoneNumber: String!
+  isVerified: Boolean!
+  currentLocation: Vector @col(size: 2)
+  status: String!
+  vehicleType: String
+  photoUrl: String
+  averageRating: Float
+}
+
+type EmergencyAlert @table {
+  triggeringUser: User!
+  alertType: String!
+  location: Vector @col(size: 2)
+  timestamp: Timestamp!
+  status: String!
+  description: String
+}
+
+type AlertResponse @table {
+  respondingUser: User!
+  emergencyAlert: EmergencyAlert!
+  responseTimestamp: Timestamp!
+  status: String!
+  estimatedArrivalTime: Timestamp
+  userRating: Float
+}
+
+type VerificationRequest @table {
+  user: User!
+  requestTimestamp: Timestamp!
+  status: String!
+  verificationDocumentUrl: String
+  adminNotes: String
+}

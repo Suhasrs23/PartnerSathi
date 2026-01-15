@@ -1,0 +1,9 @@
+{
+  "recommendations": [
+    "firebase.firebase",
+    "bradlc.vscode-tailwindcss",
+    "esbenp.prettier-vscode",
+    "ms-vscode.vscode-typescript-next",
+    "GraphQL.vscode-graphql"
+  ]
+}

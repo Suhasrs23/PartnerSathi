@@ -1,0 +1,13 @@
+{
+  "firebase.hosting.enabled": true,
+  "firebase.functions.enabled": true,
+  "typescript.preferences.importModuleSpecifier": "relative",
+  "emmet.includeLanguages": {
+    "javascript": "javascriptreact"
+  },
+  "files.associations": {
+    "*.gql": "graphql"
+  },
+  "editor.formatOnSave": true,
+  "editor.defaultFormatter": "esbenp.prettier-vscode"
+}

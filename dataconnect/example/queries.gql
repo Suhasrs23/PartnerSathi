@@ -1,0 +1,65 @@
+mutation CreateEmergencyAlert(
+    $triggeringUserId: UUID!,
+    $alertType: String!,
+    $description: String,
+    $location: Vector,
+    $status: String!,
+    $timestamp: Timestamp!
+) @auth(level: USER) {
+  emergencyAlert_insert(
+    data: {
+      triggeringUserId: $triggeringUserId
+      alertType: $alertType
+      description: $description
+      location: $location
+      status: $status
+      timestamp: $timestamp
+    }
+  ) {
+    id
+  }
+}
+
+query GetEmergencyAlertsByUser($triggeringUserId: UUID!) @auth(level: USER) {
+  emergencyAlerts(where: { triggeringUserId: { eq: $triggeringUserId } }) {
+    id
+    alertType
+    description
+    location
+    status
+    timestamp
+  }
+}
+
+mutation CreateAlertResponse(
+    $emergencyAlertId: UUID!,
+    $respondingUserId: UUID!,
+    $estimatedArrivalTime: Timestamp,
+    $responseTimestamp: Timestamp!,
+    $status: String!,
+    $userRating: Float
+) @auth(level: USER) {
+  alertResponse_insert(
+    data: {
+      emergencyAlertId: $emergencyAlertId
+      respondingUserId: $respondingUserId
+      estimatedArrivalTime: $estimatedArrivalTime
+      responseTimestamp: $responseTimestamp
+      status: $status
+      userRating: $userRating
+    }
+  ) {
+    id
+  }
+}
+
+query GetAlertResponsesByEmergencyAlert($emergencyAlertId: UUID!) @auth(level: USER) {
+  alertResponses(where: { emergencyAlertId: { eq: $emergencyAlertId } }) {
+    id
+    respondingUserId
+    estimatedArrivalTime
+    responseTimestamp
+    status
+    userRating
+  }
+}
