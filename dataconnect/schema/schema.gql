@@ -1,36 +1,83 @@
+scalar Date
+scalar DateTime
+scalar Decimal
+
 type User @table {
-  displayName: String!
-  phoneNumber: String!
-  isVerified: Boolean!
-  currentLocation: Vector @col(size: 2)
-  status: String!
-  vehicleType?: String
+  UUID: ID!,
+  name: String!
   photoUrl: String
-  averageRating: Float
+  phoneNumber: String!
+  isPhoneVerified: Boolean!
+  email: String
+  DOB: Date,
+  gender: String
+  bloodGroup: String
+  rating: Float
+  helpScore: Int
+  vehicleType?: String
+  isActive: Boolean
+  deviceType: String
+  pushToken: String
+  lastLogin: DateTime
+  createdAt: DateTime
+  updatedAt: DateTime
+  deletedAt: DateTime
 }
 
-type EmergencyAlert @table {
-  triggeringUser: User!
-  alertType: String!
-  location: Vector @col(size: 2)
-  timestamp: Timestamp!
-  status: String!
-  description: String
+type Companies @table{
+  CUID: ID!
+  companyName: String!
+  addedAt: DateTime
 }
 
-type AlertResponse @table {
-  respondingUser: User!
-  emergencyAlert: EmergencyAlert!
-  responseTimestamp: Timestamp!
-  status: String!
-  estimatedArrivalTime: Timestamp
-  userRating: Float
+type UserCompanies @table{
+  UCID: ID!
+  companyId: ID!
+  userId: ID!
+  joinedAt: DateTime
+  leftAt: DateTime
 }
 
-type VerificationRequest @table {
-  user: User!
-  requestTimestamp: Timestamp!
-  status: String!
-  verificationDocumentUrl: String
-  adminNotes: String
+type EmergencyContacts @table {
+  ECID: ID!
+  userId: ID!
+  ECName: String
+  phoneNumber: String!
+  relation: String
+  createdAt: DateTime
+}
+
+type Events @table {
+  EUID: ID!
+  userId: ID!
+  eventType: String!
+  severityLevel: String
+  status: String
+  latitude: Decimal
+  longitude: Decimal
+  locationAccuracy: Int
+  triggeredBy: String!
+  responseCount: Int
+  isFalseAlarm: Boolean
+  startTime: DateTime
+  endTime: DateTime
+  createdAt: DateTime
+  updatedAt: DateTime
+}
+
+type EventResponders @table {
+  ERID: ID!
+  EventId: ID!
+  responderUserId: ID!
+  responseStatus: String
+  joinedAt: DateTime
+  leftAt: DateTime
+}
+
+type LocationLogs @table {
+  LUID: ID!
+  userId: ID!
+  latitude: Decimal
+  longitude: Decimal
+  recordedAt: DateTime
 }
