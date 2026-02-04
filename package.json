@@ -1,5 +1,6 @@
 {
   "dependencies": {
+    "@dataconnect/generated-core": "file:src/dataconnect-generated",
     "@react-native-community/cli": "^20.1.0",
     "@react-native-firebase/app": "^23.8.3"
   }

@@ -1,83 +1,79 @@
-scalar Date
-scalar DateTime
-scalar Decimal
-
 type User @table {
-  UUID: ID!,
+  uuid: UUID! @default(expr: "uuidV4()")
   name: String!
   photoUrl: String
   phoneNumber: String!
   isPhoneVerified: Boolean!
   email: String
-  DOB: Date,
+  dob: Date
   gender: String
   bloodGroup: String
   rating: Float
   helpScore: Int
-  vehicleType?: String
+  vehicleType: String
   isActive: Boolean
   deviceType: String
   pushToken: String
-  lastLogin: DateTime
-  createdAt: DateTime
-  updatedAt: DateTime
-  deletedAt: DateTime
+  lastLogin: Timestamp
+  createdAt: Timestamp
+  updatedAt: Timestamp
+  deletedAt: Timestamp
 }
 
-type Companies @table{
-  CUID: ID!
+type Companies @table {
+  cuid: UUID! @default(expr: "uuidV4()")
   companyName: String!
-  addedAt: DateTime
+  addedAt: Timestamp
 }
 
-type UserCompanies @table{
-  UCID: ID!
-  companyId: ID!
-  userId: ID!
-  joinedAt: DateTime
-  leftAt: DateTime
+type UserCompanies @table {
+  ucid: UUID! @default(expr: "uuidV4()")
+  companyId: UUID!
+  userId: UUID!
+  joinedAt: Timestamp
+  leftAt: Timestamp
 }
 
 type EmergencyContacts @table {
-  ECID: ID!
-  userId: ID!
-  ECName: String
+  ecid: UUID! @default(expr: "uuidV4()")
+  userId: UUID!
+  ecName: String
   phoneNumber: String!
   relation: String
-  createdAt: DateTime
+  createdAt: Timestamp
 }
 
 type Events @table {
-  EUID: ID!
-  userId: ID!
+  euid: UUID! @default(expr: "uuidV4()")
+  userId: UUID!
   eventType: String!
   severityLevel: String
   status: String
-  latitude: Decimal
-  longitude: Decimal
+  latitude: Float
+  longitude: Float
   locationAccuracy: Int
   triggeredBy: String!
   responseCount: Int
   isFalseAlarm: Boolean
-  startTime: DateTime
-  endTime: DateTime
-  createdAt: DateTime
-  updatedAt: DateTime
+  startTime: Timestamp
+  endTime: Timestamp
+  createdAt: Timestamp
+  updatedAt: Timestamp
 }
 
 type EventResponders @table {
-  ERID: ID!
-  EventId: ID!
-  responderUserId: ID!
+  erid: UUID! @default(expr: "uuidV4()")
+  eventId: UUID!
+  responderUserId: UUID!
   responseStatus: String
-  joinedAt: DateTime
-  leftAt: DateTime
+  joinedAt: Timestamp
+  leftAt: Timestamp
 }
 
 type LocationLogs @table {
-  LUID: ID!
-  userId: ID!
-  latitude: Decimal
-  longitude: Decimal
-  recordedAt: DateTime
+  luid: UUID! @default(expr: "uuidV4()")
+  userId: UUID!
+  latitude: Float
+  longitude: Float
+  recordedAt: Timestamp
 }
