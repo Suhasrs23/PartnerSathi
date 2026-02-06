@@ -32,6 +32,7 @@ npm install
 ### 2. Configure Environment
 
 The `.env.local` file is already configured for local development:
+
 ```
 DATACONNECT_URL=http://127.0.0.1:9399/graphql
 ```
@@ -39,6 +40,7 @@ DATACONNECT_URL=http://127.0.0.1:9399/graphql
 ### 3. Start Emulators
 
 From the project root:
+
 ```bash
 firebase emulators:start
 ```
@@ -53,6 +55,7 @@ npm test
 ```
 
 This will:
+
 - Connect to the local Data Connect emulator
 - Fetch existing events
 - Fetch active users
@@ -61,9 +64,11 @@ This will:
 ## API Endpoints
 
 ### POST /sos
+
 Trigger an SOS emergency alert.
 
 **Request:**
+
 ```bash
 curl -X POST http://127.0.0.1:5001/partnersathi-2026/us-central1/sos \
   -H "Content-Type: application/json" \
@@ -76,6 +81,7 @@ curl -X POST http://127.0.0.1:5001/partnersathi-2026/us-central1/sos \
 ```
 
 **Response:**
+
 ```json
 {
   "success": true,
@@ -88,9 +94,11 @@ curl -X POST http://127.0.0.1:5001/partnersathi-2026/us-central1/sos \
 ```
 
 ### POST /respond
+
 Acknowledge response to an SOS alert.
 
 **Request:**
+
 ```bash
 curl -X POST http://127.0.0.1:5001/partnersathi-2026/us-central1/respond \
   -H "Content-Type: application/json" \
@@ -101,6 +109,7 @@ curl -X POST http://127.0.0.1:5001/partnersathi-2026/us-central1/respond \
 ```
 
 ### GET /health
+
 Health check endpoint.
 
 ```bash
@@ -110,11 +119,13 @@ curl http://127.0.0.1:5001/partnersathi-2026/us-central1/health
 ## Development Workflow
 
 1. **Start emulators** (from project root):
+
    ```bash
    firebase emulators:start
    ```
 
 2. **Test Data Connect** (from backend/functions):
+
    ```bash
    npm test
    ```
@@ -151,11 +162,13 @@ For local development, auth is optional (falls back to test user ID).
 ## Deployment
 
 Deploy to production:
+
 ```bash
 firebase deploy --only functions
 ```
 
 Deploy specific function:
+
 ```bash
 firebase deploy --only functions:sos
 ```
@@ -165,6 +178,7 @@ firebase deploy --only functions:sos
 View logs in emulator UI: `http://127.0.0.1:4000/functions`
 
 Or use Firebase CLI:
+
 ```bash
 firebase functions:log
 ```
@@ -172,16 +186,19 @@ firebase functions:log
 ## Troubleshooting
 
 **Functions not loading:**
+
 - Check `firebase.json` points to `backend/functions`
 - Run `npm install` in `backend/functions`
 - Restart emulators
 
 **Data Connect connection fails:**
+
 - Verify emulators are running: `firebase emulators:start`
 - Check Data Connect is on port 9399
 - Run test script: `npm test`
 
 **Push notifications not working:**
+
 - Verify Firebase Admin is initialized
 - Check FCM tokens are valid
 - View logs in emulator UI
