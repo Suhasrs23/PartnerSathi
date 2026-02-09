@@ -1,66 +1,126 @@
-mutation SeedData @transaction @auth(level: PUBLIC, insecureReason: "This operation is for seeding data and does not require authentication") {
-  user_insertMany(data: [
-    {
-      id: "550e8400-e29b-41d4-a716-446655440000",
-      displayName: "Demo User 1",
-      phoneNumber: "123-456-7890",
-      isVerified: true,
+mutation SeedData {
+  # Insert test users
+  user1: user_insert(
+    data: {
+      uuid: "550e8400-e29b-41d4-a716-446655440000"
+      name: "Rajesh Kumar"
+      phoneNumber: "+919876543210"
+      isPhoneVerified: true
+      email: "rajesh@example.com"
+      vehicleType: "Two Wheeler"
+      isActive: true
+      pushToken: "test-token-1"
+      createdAt: "2026-02-06T10:30:00.000Z"
+    }
+  )
+
+  user2: user_insert(
+    data: {
+      uuid: "550e8400-e29b-41d4-a716-446655440001"
+      name: "Priya Sharma"
+      phoneNumber: "+919876543211"
+      isPhoneVerified: true
+      email: "priya@example.com"
+      vehicleType: "Two Wheeler"
+      isActive: true
+      pushToken: "test-token-2"
+      createdAt: "2026-02-06T10:30:00.000Z"
+    }
+  )
+
+  # Insert companies
+  company1: companies_insert(
+    data: {
+      cuid: "7f3e8c2a-4b5d-4a1e-9c7b-2d8f6e4a9b3c"
+      companyName: "Zomato"
+      addedAt: "2026-02-06T10:30:00.000Z"
+    }
+  )
+
+  company2: companies_insert(
+    data: {
+      cuid: "a2c5e8f1-6d4b-4e2a-8f9c-1b7d4e6a8c2f"
+      companyName: "Swiggy"
+      addedAt: "2026-02-06T10:30:00.000Z"
+    }
+  )
+
+  company3: companies_insert(
+    data: {
+      cuid: "3d7f9a2c-5e8b-4f1d-9a6c-4e2b8f7d3a5c"
+      companyName: "Dominos"
+      addedAt: "2026-02-06T10:30:00.000Z"
+    }
+  )
+
+  # Link users to companies
+  uc1: userCompanies_insert(
+    data: {
+      ucid: "9b4e6a8c-2f5d-4e1a-7c9b-3d8f6e4a2c5e"
+      companyId: "7f3e8c2a-4b5d-4a1e-9c7b-2d8f6e4a9b3c"
+      userId: "550e8400-e29b-41d4-a716-446655440000"
+      joinedAt: "2026-02-06T10:30:00.000Z"
+    }
+  )
+
+  uc2: userCompanies_insert(
+    data: {
+      ucid: "5e8a2c4f-1d6b-4e9a-8c7f-2b4d6e8a3c5f"
+      companyId: "a2c5e8f1-6d4b-4e2a-8f9c-1b7d4e6a8c2f"
+      userId: "550e8400-e29b-41d4-a716-446655440001"
+      joinedAt: "2026-02-06T10:30:00.000Z"
+    }
+  )
+
+  # Insert emergency contacts
+  ec1: emergencyContacts_insert(
+    data: {
+      ecid: "2c4e6a8f-9b5d-4e1c-7a9b-3f8d6e4a2c5e"
+      userId: "550e8400-e29b-41d4-a716-446655440000"
+      ecName: "Ramesh Kumar"
+      phoneNumber: "+919876543299"
+      relation: "Father"
+      createdAt: "2026-02-06T10:30:00.000Z"
+    }
+  )
+
+  ec2: emergencyContacts_insert(
+    data: {
+      ecid: "8a6c4e2f-5d9b-4a1e-7c8f-2e4b6d8a3c5f"
+      userId: "550e8400-e29b-41d4-a716-446655440001"
+      ecName: "Vikram Sharma"
+      phoneNumber: "+919876543288"
+      relation: "Brother"
+      createdAt: "2026-02-06T10:30:00.000Z"
+    }
+  )
+
+  # Insert test events
+  event1: events_insert(
+    data: {
+      euid: "4f2e8a6c-1d5b-4e9a-8c7f-3b6d4e2a8c5f"
+      userId: "550e8400-e29b-41d4-a716-446655440000"
+      eventType: "Robbery"
+      severityLevel: "high"
       status: "active"
-    },
-    {
-      id: "550e8400-e29b-41d4-a716-446655440001",
-      displayName: "Demo User 2",
-      phoneNumber: "987-654-3210",
-      isVerified: false,
-      status: "inactive"
+      latitude: 28.6139
+      longitude: 77.2090
+      triggeredBy: "manual"
+      createdAt: "2026-02-06T10:30:00.000Z"
     }
-  ])
-  emergencyAlert_insertMany(data: [
-    {
-      id: "650e8400-e29b-41d4-a716-446655440002",
-      triggeringUserId: "550e8400-e29b-41d4-a716-446655440000",
-      alertType: "Medical",
-      status: "Open",
-      timestamp: "2024-04-26T12:00:00Z",
-      location: [37.7749, -122.4194]
-    },
-    {
-      id: "750e8400-e29b-41d4-a716-446655440003",
-      triggeringUserId: "550e8400-e29b-41d4-a716-446655440001",
-      alertType: "Fire",
-      status: "Closed",
-      timestamp: "2024-04-26T13:00:00Z",
-            location: [34.0522, -118.2437]
+  )
+
+  event2: events_insert(
+    data: {
+      euid: "6d8a4c2e-9f5b-4e1a-7c8d-2f4b6e8a3c5f"
+      userId: "550e8400-e29b-41d4-a716-446655440001"
+      eventType: "Accident"
+      severityLevel: "medium"
+      status: "resolved"
+      latitude: 28.7041
+      longitude: 77.1025
+      triggeredBy: "manual"
+      createdAt: "2026-02-06T09:00:00.000Z"
     }
-  ])
-  alertResponse_insertMany(data: [
-    {
-      id: "850e8400-e29b-41d4-a716-446655440004",
-      emergencyAlertId: "650e8400-e29b-41d4-a716-446655440002",
-      respondingUserId: "550e8400-e29b-41d4-a716-446655440001",
-      status: "Accepted",
-      responseTimestamp: "2024-04-26T12:15:00Z"
-    },
-    {
-      id: "950e8400-e29b-41d4-a716-446655440005",
-      emergencyAlertId: "750e8400-e29b-41d4-a716-446655440003",
-      respondingUserId: "550e8400-e29b-41d4-a716-446655440000",
-      status: "Rejected",
-      responseTimestamp: "2024-04-26T13:30:00Z"
-    }
-  ])
-  verificationRequest_insertMany(data: [
-    {
-      id: "a50e8400-e29b-41d4-a716-446655440006",
-      userId: "550e8400-e29b-41d4-a716-446655440000",
-      requestTimestamp: "2024-04-25T10:00:00Z",
-      status: "Pending"
-    },
-    {
-      id: "b50e8400-e29b-41d4-a716-446655440007",
-      userId: "550e8400-e29b-41d4-a716-446655440001",
-      requestTimestamp: "2024-04-26T09:00:00Z",
-      status: "Approved"
-    }
-  ])
+  )
 }
