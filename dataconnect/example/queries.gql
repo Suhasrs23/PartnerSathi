@@ -1,0 +1,415 @@
+# ============================================
+# USER OPERATIONS
+# ============================================
+
+# Create a new user
+mutation CreateUser(
+  $name: String!
+  $phoneNumber: String!
+  $isPhoneVerified: Boolean!
+  $email: String
+  $vehicleType: String
+  $pushToken: String
+) @auth(level: PUBLIC) {
+  user_insert(
+    data: {
+      name: $name
+      phoneNumber: $phoneNumber
+      isPhoneVerified: $isPhoneVerified
+      email: $email
+      vehicleType: $vehicleType
+      isActive: true
+      pushToken: $pushToken
+    }
+  )
+}
+
+# Get all users
+query GetAllUsers @auth(level: PUBLIC) {
+  users {
+    uuid
+    name
+    phoneNumber
+    email
+    vehicleType
+    rating
+    helpScore
+    isActive
+    createdAt
+  }
+}
+
+# Get user by UUID
+query GetUserById($id: UUID!) @auth(level: PUBLIC) {
+  user(id: $id) {
+    uuid
+    name
+    photoUrl
+    phoneNumber
+    isPhoneVerified
+    email
+    dob
+    gender
+    bloodGroup
+    rating
+    helpScore
+    vehicleType
+    isActive
+    deviceType
+    pushToken
+    lastLogin
+    createdAt
+    updatedAt
+  }
+}
+
+# Update user profile
+mutation UpdateUser(
+  $uuid: UUID!
+  $name: String
+  $email: String
+  $photoUrl: String
+  $dob: Date
+  $gender: String
+  $bloodGroup: String
+  $vehicleType: String
+) @auth(level: PUBLIC) {
+  user_update(
+    key: { uuid: $uuid }
+    data: {
+      name: $name
+      email: $email
+      photoUrl: $photoUrl
+      dob: $dob
+      gender: $gender
+      bloodGroup: $bloodGroup
+      vehicleType: $vehicleType
+    }
+  )
+}
+
+# Update user's last login
+mutation UpdateLastLogin($uuid: UUID!, $lastLogin: Timestamp!) @auth(level: PUBLIC) {
+  user_update(
+    key: { uuid: $uuid }
+    data: { lastLogin: $lastLogin }
+  )
+}
+
+# Deactivate user (soft delete)
+mutation DeactivateUser($uuid: UUID!) @auth(level: PUBLIC) {
+  user_update(
+    key: { uuid: $uuid }
+    data: { isActive: false }
+  )
+}
+
+# Delete user
+mutation DeleteUser($uuid: UUID!) @auth(level: PUBLIC) {
+  user_delete(key: { uuid: $uuid })
+}
+
+# ============================================
+# COMPANY OPERATIONS
+# ============================================
+
+# Create a new company
+mutation CreateCompany($companyName: String!) @auth(level: PUBLIC) {
+  companies_insert(
+    data: { companyName: $companyName }
+  )
+}
+
+# Get all companies
+query GetAllCompanies @auth(level: PUBLIC) {
+  companies {
+    cuid
+    companyName
+    addedAt
+  }
+}
+
+# Get company by UUID
+query GetCompanyById($id: UUID!) @auth(level: PUBLIC) {
+  companies(id: $id) {
+    cuid
+    companyName
+    addedAt
+  }
+}
+
+# ============================================
+# USER-COMPANY RELATIONSHIP OPERATIONS
+# ============================================
+
+# Link user to company
+mutation LinkUserToCompany($userId: UUID!, $companyId: UUID!)
+@auth(level: PUBLIC) {
+  userCompanies_insert(
+    data: {
+      userId: $userId
+      companyId: $companyId
+    }
+  )
+}
+
+# Get all user-company relationships
+query GetAllUserCompanies @auth(level: PUBLIC) {
+  userCompanies {
+    ucid
+    userId
+    companyId
+    joinedAt
+    leftAt
+  }
+}
+
+# Mark user as left company
+mutation UserLeftCompany($ucid: UUID!, $leftAt: Timestamp!) @auth(level: PUBLIC) {
+  userCompanies_update(
+    key: { ucid: $ucid }
+    data: { leftAt: $leftAt }
+  )
+}
+
+# ============================================
+# EMERGENCY CONTACT OPERATIONS
+# ============================================
+
+# Add emergency contact
+mutation AddEmergencyContact(
+  $userId: UUID!
+  $ecName: String!
+  $phoneNumber: String!
+  $relation: String
+) @auth(level: PUBLIC) {
+  emergencyContacts_insert(
+    data: {
+      userId: $userId
+      ecName: $ecName
+      phoneNumber: $phoneNumber
+      relation: $relation
+    }
+  )
+}
+
+# Get all emergency contacts
+query GetAllEmergencyContacts @auth(level: PUBLIC) {
+  emergencyContacts {
+    ecid
+    userId
+    ecName
+    phoneNumber
+    relation
+    createdAt
+  }
+}
+
+# Update emergency contact
+mutation UpdateEmergencyContact(
+  $ecid: UUID!
+  $ecName: String
+  $phoneNumber: String
+  $relation: String
+) @auth(level: PUBLIC) {
+  emergencyContacts_update(
+    key: { ecid: $ecid }
+    data: { ecName: $ecName, phoneNumber: $phoneNumber, relation: $relation }
+  )
+}
+
+# Delete emergency contact
+mutation DeleteEmergencyContact($ecid: UUID!) @auth(level: PUBLIC) {
+  emergencyContacts_delete(key: { ecid: $ecid })
+}
+
+# ============================================
+# EVENT OPERATIONS
+# ============================================
+
+# Create a new event (emergency)
+mutation CreateEvent(
+  $userId: UUID!
+  $eventType: String!
+  $severityLevel: String
+  $latitude: Float!
+  $longitude: Float!
+  $locationAccuracy: Int
+  $triggeredBy: String!
+) @auth(level: PUBLIC) {
+  events_insert(
+    data: {
+      userId: $userId
+      eventType: $eventType
+      severityLevel: $severityLevel
+      status: "active"
+      latitude: $latitude
+      longitude: $longitude
+      locationAccuracy: $locationAccuracy
+      triggeredBy: $triggeredBy
+      responseCount: 0
+      isFalseAlarm: false
+    }
+  )
+}
+
+# Get all events
+query GetAllEvents @auth(level: PUBLIC) {
+  events {
+    euid
+    userId
+    eventType
+    severityLevel
+    status
+    latitude
+    longitude
+    triggeredBy
+    responseCount
+    isFalseAlarm
+    startTime
+    endTime
+    createdAt
+  }
+}
+
+# Get event by ID
+query GetEventById($id: UUID!) @auth(level: PUBLIC) {
+  events(id: $id) {
+    euid
+    userId
+    eventType
+    severityLevel
+    status
+    latitude
+    longitude
+    locationAccuracy
+    triggeredBy
+    responseCount
+    isFalseAlarm
+    startTime
+    endTime
+    createdAt
+    updatedAt
+  }
+}
+
+# Update event status
+mutation UpdateEventStatus($euid: UUID!, $status: String!)
+@auth(level: PUBLIC) {
+  events_update(
+    key: { euid: $euid }
+    data: {
+      status: $status
+    }
+  )
+}
+
+# Mark event as false alarm
+mutation MarkEventAsFalseAlarm($euid: UUID!) @auth(level: PUBLIC) {
+  events_update(
+    key: { euid: $euid }
+    data: {
+      isFalseAlarm: true
+      status: "resolved"
+    }
+  )
+}
+
+# Increment response count
+mutation IncrementResponseCount($euid: UUID!, $count: Int!)
+@auth(level: PUBLIC) {
+  events_update(
+    key: { euid: $euid }
+    data: { responseCount: $count }
+  )
+}
+
+# Delete event
+mutation DeleteEvent($euid: UUID!) @auth(level: PUBLIC) {
+  events_delete(key: { euid: $euid })
+}
+
+# ============================================
+# EVENT RESPONDER OPERATIONS
+# ============================================
+
+# Add responder to event
+mutation AddEventResponder(
+  $eventId: UUID!
+  $responderUserId: UUID!
+  $responseStatus: String!
+) @auth(level: PUBLIC) {
+  eventResponders_insert(
+    data: {
+      eventId: $eventId
+      responderUserId: $responderUserId
+      responseStatus: $responseStatus
+    }
+  )
+}
+
+# Get all event responders
+query GetAllEventResponders @auth(level: PUBLIC) {
+  eventResponders {
+    erid
+    eventId
+    responderUserId
+    responseStatus
+    joinedAt
+    leftAt
+  }
+}
+
+# Update responder status
+mutation UpdateResponderStatus($erid: UUID!, $responseStatus: String!)
+@auth(level: PUBLIC) {
+  eventResponders_update(
+    key: { erid: $erid }
+    data: { responseStatus: $responseStatus }
+  )
+}
+
+# Mark responder as left event
+mutation ResponderLeftEvent($erid: UUID!, $leftAt: Timestamp!) @auth(level: PUBLIC) {
+  eventResponders_update(
+    key: { erid: $erid }
+    data: { leftAt: $leftAt }
+  )
+}
+
+# Delete event responder
+mutation DeleteEventResponder($erid: UUID!) @auth(level: PUBLIC) {
+  eventResponders_delete(key: { erid: $erid })
+}
+
+# ============================================
+# LOCATION LOG OPERATIONS
+# ============================================
+
+# Log user location
+mutation LogLocation($userId: UUID!, $latitude: Float!, $longitude: Float!)
+@auth(level: PUBLIC) {
+  locationLogs_insert(
+    data: {
+      userId: $userId
+      latitude: $latitude
+      longitude: $longitude
+    }
+  )
+}
+
+# Get all location logs
+query GetAllLocationLogs @auth(level: PUBLIC) {
+  locationLogs {
+    luid
+    userId
+    latitude
+    longitude
+    recordedAt
+  }
+}
+
+# Delete old location logs
+mutation DeleteLocationLog($luid: UUID!) @auth(level: PUBLIC) {
+  locationLogs_delete(key: { luid: $luid })
+}
